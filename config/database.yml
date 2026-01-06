@@ -23,6 +23,8 @@ default: &default
 development:
   <<: *default
   database: usage_guardrail_demo_development
+  username: nemwel
+  password: root
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -57,6 +59,8 @@ development:
 test:
   <<: *default
   database: usage_guardrail_demo_test
+  username: nemwel
+  password: root
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
