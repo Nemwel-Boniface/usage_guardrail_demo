@@ -1,0 +1,1 @@
+class BudgetExceededError < StandardError; end
