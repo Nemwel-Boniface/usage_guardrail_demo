@@ -5,16 +5,19 @@ class Processor
 
   def call
     tracker = UsageTracker.find_by!(month: @month)
+    exceeded = false
 
     tracker.with_lock do
       if tracker.locked || tracker.request_count + 1 > tracker.request_limit
-        # attempt to persist the permanent kill switch, then stop
+        # persist the lock inside the transaction
         tracker.update!(locked: true)
-        raise BudgetExceededError
+        exceeded = true
+      else
+        tracker.increment!(:request_count)
       end
-
-      # increment the counter for a successful request
-      tracker.increment!(:request_count)
     end
+
+    # raise AFTER the transaction commits
+    raise BudgetExceededError if exceeded
   end
 end
